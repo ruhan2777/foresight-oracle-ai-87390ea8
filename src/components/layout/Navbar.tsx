@@ -39,7 +39,7 @@ export function Navbar() {
               <div className="absolute inset-0 rounded-xl bg-primary/30 blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
             <div className="hidden sm:block">
-              <span className="text-lg font-bold gradient-text">StockAI</span>
+              <span className="text-lg font-bold gradient-text">Exchange</span>
               <span className="text-xs text-muted-foreground block -mt-1">Predictive Analytics</span>
             </div>
           </Link>
