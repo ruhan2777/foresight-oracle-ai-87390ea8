@@ -40,7 +40,7 @@ export function Navbar() {
             </div>
             <div className="hidden sm:block">
               <span className="text-lg font-bold gradient-text">Exchange</span>
-              <span className="text-xs text-muted-foreground block -mt-1">Predictive Analytics</span>
+              <span className="text-xs text-muted-foreground block -mt-1">Market Intelligence</span>
             </div>
           </Link>
 
