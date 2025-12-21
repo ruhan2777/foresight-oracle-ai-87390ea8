@@ -6,8 +6,25 @@ import { PredictionCard } from '@/components/dashboard/PredictionCard';
 import { AlertsSidebar } from '@/components/dashboard/AlertsSidebar';
 import { PerformanceCharts } from '@/components/dashboard/PerformanceCharts';
 import { topPredictions } from '@/lib/mockData';
+import { useDataOrchestration } from '@/hooks/useDataOrchestration';
 
 const Index = () => {
+  const { 
+    health, 
+    anomalyHistory, 
+    sentimentData,
+    clearAnomalies,
+  } = useDataOrchestration({
+    symbols: ['SPY', 'QQQ', 'DIA'],
+    refreshInterval: 60000,
+    enableSentiment: true,
+  });
+
+  // Calculate average weighted sentiment from all symbols
+  const avgSentiment = sentimentData.length > 0
+    ? sentimentData.reduce((sum, s) => sum + s.weightedSentiment, 0) / sentimentData.length
+    : 0.42; // Fallback to default
+
   return (
     <Layout>
       <div className="space-y-6 animate-fade-in">
@@ -25,8 +42,12 @@ const Index = () => {
           </div>
         </div>
 
-        {/* System Health Bar */}
-        <SystemHealth />
+        {/* System Health Bar with Data Health Status */}
+        <SystemHealth 
+          dataHealth={health} 
+          anomalyHistory={anomalyHistory}
+          onClearAnomalies={clearAnomalies}
+        />
 
         {/* Market Overview */}
         <section>
@@ -36,7 +57,7 @@ const Index = () => {
               <MarketOverview />
             </div>
             <div>
-              <SentimentGauge value={0.42} />
+              <SentimentGauge value={avgSentiment} />
             </div>
           </div>
         </section>
