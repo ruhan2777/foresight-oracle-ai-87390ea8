@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { topPredictions } from '@/lib/mockData';
 import { cn } from '@/lib/utils';
+import { AIReasoningLog } from '@/components/analysis/AIReasoningLog';
 import {
   LineChart,
   Line,
@@ -269,6 +270,11 @@ const Analysis = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* AI Reasoning Log */}
+        <div className="glass-card p-6">
+          <AIReasoningLog ticker={activeTicker} />
         </div>
 
         {/* Factor Analysis Tabs */}
