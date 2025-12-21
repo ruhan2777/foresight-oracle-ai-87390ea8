@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { MarketIndex } from '@/lib/mockData';
 
@@ -17,9 +17,12 @@ interface UseMarketDataReturn {
 
 export function useMarketData(options: UseMarketDataOptions = {}): UseMarketDataReturn {
   const { 
-    symbols = ['SPY', 'QQQ', 'DIA'], 
+    symbols: inputSymbols, 
     refreshInterval = 60000
   } = options;
+
+  // Memoize symbols to prevent unnecessary re-renders
+  const symbols = useMemo(() => inputSymbols || ['SPY', 'QQQ', 'DIA'], [inputSymbols]);
 
   const [data, setData] = useState<MarketIndex[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -33,7 +36,6 @@ export function useMarketData(options: UseMarketDataOptions = {}): UseMarketData
   const fetchMarketData = useCallback(async () => {
     // Prevent concurrent requests
     if (isFetching.current) {
-      console.log('Already fetching, skipping...');
       return;
     }
     
