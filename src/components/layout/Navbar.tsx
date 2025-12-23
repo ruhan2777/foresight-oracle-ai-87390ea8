@@ -12,6 +12,10 @@ import {
   Activity
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAppMode } from '@/contexts/AppModeContext';
+import { XPProgressBar } from '@/components/academy/XPProgressBar';
+import { VirtualBalance } from '@/components/academy/VirtualBalance';
+import { MarketHealthTicker } from '@/components/terminal/MarketHealthTicker';
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -25,6 +29,10 @@ const navItems = [
 export function Navbar() {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { mode } = useAppMode();
+
+  const isAcademy = mode === 'academy';
+  const isTerminal = mode === 'terminal';
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-border/50">
@@ -33,14 +41,26 @@ export function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
             <div className="relative">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
+              <div className={cn(
+                'w-10 h-10 rounded-xl flex items-center justify-center',
+                isAcademy 
+                  ? 'bg-gradient-to-br from-emerald-500 to-teal-500' 
+                  : 'bg-gradient-to-br from-primary to-primary/60'
+              )}>
                 <Activity className="w-5 h-5 text-primary-foreground" />
               </div>
               <div className="absolute inset-0 rounded-xl bg-primary/30 blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
             <div className="hidden sm:block">
-              <span className="text-lg font-bold gradient-text">Exchange</span>
-              <span className="text-xs text-muted-foreground block -mt-1">Market Intelligence</span>
+              <span className={cn(
+                'text-lg font-bold',
+                isAcademy ? 'text-emerald-400' : 'gradient-text'
+              )}>
+                Exchange
+              </span>
+              <span className="text-xs text-muted-foreground block -mt-1">
+                {isAcademy ? 'Academy' : isTerminal ? 'Terminal' : 'Market Intelligence'}
+              </span>
             </div>
           </Link>
 
@@ -56,7 +76,9 @@ export function Navbar() {
                   className={cn(
                     'flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
                     isActive
-                      ? 'bg-primary/10 text-primary'
+                      ? isAcademy 
+                        ? 'bg-emerald-500/10 text-emerald-400' 
+                        : 'bg-primary/10 text-primary'
                       : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
                   )}
                 >
@@ -67,17 +89,32 @@ export function Navbar() {
             })}
           </div>
 
-          {/* System Status */}
+          {/* Mode-specific header elements */}
           <div className="hidden lg:flex items-center gap-4">
-            <div className="flex items-center gap-2 text-sm">
-              <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
-              <span className="text-muted-foreground">Market</span>
-              <span className="text-success font-medium">OPEN</span>
-            </div>
-            <div className="h-6 w-px bg-border" />
-            <div className="text-sm font-mono text-muted-foreground">
-              {new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
-            </div>
+            {isAcademy && (
+              <>
+                <VirtualBalance />
+                <XPProgressBar />
+              </>
+            )}
+
+            {isTerminal && (
+              <MarketHealthTicker />
+            )}
+
+            {!isAcademy && !isTerminal && (
+              <>
+                <div className="flex items-center gap-2 text-sm">
+                  <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
+                  <span className="text-muted-foreground">Market</span>
+                  <span className="text-success font-medium">OPEN</span>
+                </div>
+                <div className="h-6 w-px bg-border" />
+                <div className="text-sm font-mono text-muted-foreground">
+                  {new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                </div>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -94,6 +131,13 @@ export function Navbar() {
       {mobileOpen && (
         <div className="md:hidden border-t border-border/50 bg-background/95 backdrop-blur-xl animate-slide-up">
           <div className="px-4 py-3 space-y-1">
+            {/* Mobile mode indicators */}
+            {isAcademy && (
+              <div className="flex items-center gap-2 mb-3 px-4">
+                <VirtualBalance />
+              </div>
+            )}
+            
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
@@ -105,7 +149,9 @@ export function Navbar() {
                   className={cn(
                     'flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all',
                     isActive
-                      ? 'bg-primary/10 text-primary'
+                      ? isAcademy 
+                        ? 'bg-emerald-500/10 text-emerald-400' 
+                        : 'bg-primary/10 text-primary'
                       : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
                   )}
                 >
