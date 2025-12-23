@@ -1,11 +1,17 @@
 import { ReactNode } from 'react';
 import { Navbar } from './Navbar';
+import { useAppMode } from '@/contexts/AppModeContext';
+import { MissionsSidebar } from '@/components/academy/MissionsSidebar';
+import { WelcomeTooltip } from '@/components/onboarding/WelcomeTooltip';
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 export function Layout({ children }: LayoutProps) {
+  const { mode } = useAppMode();
+  const isAcademy = mode === 'academy';
+
   return (
     <div className="min-h-screen bg-background">
       {/* Background grid pattern */}
@@ -20,6 +26,12 @@ export function Layout({ children }: LayoutProps) {
       <main className="relative pt-20 pb-8 px-4 sm:px-6 max-w-[1600px] mx-auto">
         {children}
       </main>
+
+      {/* Academy Mode: Missions Sidebar */}
+      {isAcademy && <MissionsSidebar />}
+
+      {/* Welcome Tooltip */}
+      <WelcomeTooltip />
     </div>
   );
 }

@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
+import { ModeSwitcher } from '@/components/settings/ModeSwitcher';
 
 const Settings = () => {
   const [notifications, setNotifications] = useState({
@@ -45,6 +46,9 @@ const Settings = () => {
           <h1 className="text-3xl font-bold">Settings</h1>
           <p className="text-muted-foreground mt-1">Customize your preferences and notifications</p>
         </div>
+
+        {/* Mode Switcher */}
+        <ModeSwitcher />
 
         {/* Notification Preferences */}
         <div className="glass-card p-6">
