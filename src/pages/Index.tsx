@@ -5,10 +5,15 @@ import { SentimentGauge } from '@/components/dashboard/SentimentGauge';
 import { PredictionCard } from '@/components/dashboard/PredictionCard';
 import { AlertsSidebar } from '@/components/dashboard/AlertsSidebar';
 import { PerformanceCharts } from '@/components/dashboard/PerformanceCharts';
+import { PortfolioPanel } from '@/components/academy/PortfolioPanel';
 import { topPredictions } from '@/lib/mockData';
 import { useDataOrchestration } from '@/hooks/useDataOrchestration';
+import { useAppMode } from '@/contexts/AppModeContext';
 
 const Index = () => {
+  const { mode } = useAppMode();
+  const isAcademy = mode === 'academy';
+  
   const { 
     health, 
     anomalyHistory, 
@@ -84,6 +89,13 @@ const Index = () => {
             <AlertsSidebar />
           </div>
         </div>
+
+        {/* Portfolio Panel - Academy Mode Only */}
+        {isAcademy && (
+          <section>
+            <PortfolioPanel />
+          </section>
+        )}
 
         {/* Performance Section */}
         <section>
