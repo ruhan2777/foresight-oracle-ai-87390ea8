@@ -51,9 +51,9 @@ const missions: Mission[] = [
     category: 'learn',
   },
   {
-    id: 'paper-trade',
-    title: 'Execute a Paper Trade',
-    description: 'Make your first virtual trade using the paper trading system',
+    id: 'first-trade',
+    title: 'Execute Your First Trade',
+    description: 'Buy or sell your first stock using the paper trading system',
     xpReward: 150,
     icon: Target,
     category: 'trade',

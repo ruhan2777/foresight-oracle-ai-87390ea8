@@ -2,12 +2,17 @@ import { TrendingUp, TrendingDown, Minus, Clock, AlertTriangle, ChevronRight } f
 import { Prediction } from '@/lib/mockData';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
+import { useAppMode } from '@/contexts/AppModeContext';
+import { TradeButton } from '@/components/academy/TradeButton';
 
 interface PredictionCardProps {
   prediction: Prediction;
 }
 
 export function PredictionCard({ prediction }: PredictionCardProps) {
+  const { mode } = useAppMode();
+  const isAcademy = mode === 'academy';
+  
   const {
     ticker,
     company,
@@ -143,13 +148,18 @@ export function PredictionCard({ prediction }: PredictionCardProps) {
             <span>{riskLevel}</span>
           </div>
         </div>
-        <Link
-          to={`/analysis?ticker=${ticker}`}
-          className="flex items-center gap-1 text-sm text-primary hover:text-primary/80 transition-colors"
-        >
-          View Analysis
-          <ChevronRight className="w-4 h-4" />
-        </Link>
+        <div className="flex items-center gap-2">
+          {isAcademy && (
+            <TradeButton ticker={ticker} company={company} currentPrice={currentPrice} />
+          )}
+          <Link
+            to={`/analysis?ticker=${ticker}`}
+            className="flex items-center gap-1 text-sm text-primary hover:text-primary/80 transition-colors"
+          >
+            View Analysis
+            <ChevronRight className="w-4 h-4" />
+          </Link>
+        </div>
       </div>
     </div>
   );
