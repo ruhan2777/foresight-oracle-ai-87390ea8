@@ -16,6 +16,7 @@ import { useAppMode } from '@/contexts/AppModeContext';
 import { XPProgressBar } from '@/components/academy/XPProgressBar';
 import { VirtualBalance } from '@/components/academy/VirtualBalance';
 import { MarketHealthTicker } from '@/components/terminal/MarketHealthTicker';
+import { NavbarModeSwitcher } from '@/components/layout/NavbarModeSwitcher';
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -115,6 +116,10 @@ export function Navbar() {
                 </div>
               </>
             )}
+
+            {/* Mode Switcher */}
+            <div className="h-6 w-px bg-border" />
+            <NavbarModeSwitcher />
           </div>
 
           {/* Mobile Menu Button */}
@@ -131,6 +136,12 @@ export function Navbar() {
       {mobileOpen && (
         <div className="md:hidden border-t border-border/50 bg-background/95 backdrop-blur-xl animate-slide-up">
           <div className="px-4 py-3 space-y-1">
+            {/* Mobile mode switcher */}
+            <div className="flex items-center justify-between px-4 py-2 mb-2 border-b border-border/50">
+              <span className="text-xs text-muted-foreground uppercase tracking-wide">Mode</span>
+              <NavbarModeSwitcher />
+            </div>
+            
             {/* Mobile mode indicators */}
             {isAcademy && (
               <div className="flex items-center gap-2 mb-3 px-4">
